@@ -1,0 +1,266 @@
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+
+namespace Text_Analyzer
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+
+
+            Console.Write("Enter a Sentence: ");
+            string InputString = (Console.ReadLine()).ToLower();
+
+            string[] ArrayWords = SentenceToWord(InputString);
+            Console.WriteLine($"{{ {string.Join(",", ArrayWords)}}}");
+            Console.ReadKey();
+            frequency(ArrayWords);
+
+            Console.ReadKey();
+            Console.Write("How Many Sentence You Want to creat?: ");
+            int Number = int.Parse(Console.ReadLine());
+            Console.Write("Each Sentence Consist of how many Words?: ");
+            int NumberWords = int.Parse(Console.ReadLine());
+            RandomSentence(Number, ArrayWords, NumberWords); 
+            Console.ReadKey();
+
+            LongestShortest(ArrayWords);
+            Console.ReadKey();
+
+            Console.Write("Enter a word to search in the sentence: ");
+            string SearchWord = Console.ReadLine().ToLower();
+            WordSearch(ArrayWords, SearchWord);
+            Console.ReadKey();
+
+            PalindromeDetector(ArrayWords);
+            Console.ReadKey();
+
+            VowelConsonantCounter(ArrayWords);
+            Console.ReadKey();
+        }
+
+        static string[] SentenceToWord(string InputString)
+        {
+            string[] words = new string[0];
+            string word = "";
+            for (int i = 0; i < InputString.Length; i++)
+            {
+
+                if (InputString[i] == ' ')
+                {
+                    if (word.Length > 0)
+                    {
+                        AddIntoArray(ref words, word);
+                    }
+                    word = "";
+                }
+                else if (char.IsPunctuation(InputString[i]))
+                {
+                    if (i + 1 < InputString.Length && i != 0)
+                    {
+                        if (char.IsLetter(InputString[i - 1]) && char.IsLetter(InputString[i + 1]))
+                        {
+                            word += InputString[i];
+                        }
+                        else
+                        {
+
+                            if (word.Length > 0)
+                            {
+                                AddIntoArray(ref words, word);
+                            }
+                            word = "";
+                        }
+                    }
+                    else
+                    {
+                        if (word.Length > 0)
+                        {
+                            AddIntoArray(ref words, word);
+                        }
+                        word = "";
+                    }
+                }
+                else if ((i + 1 == InputString.Length) && char.IsLetter(InputString[i]))
+                {
+                    word += InputString[i];
+                    AddIntoArray(ref words, word);
+                }
+                else if (char.IsLetter(InputString[i]))
+                {
+                    word += InputString[i];
+                }
+
+
+            }
+
+            return words;
+        }
+        static string[] AddIntoArray(ref string[] words, string word)
+        {
+
+            Array.Resize(ref words, words.Length + 1);
+            words[words.Length - 1] = word;
+            return words;
+        }
+
+        static void frequency(string[] words)
+        {
+
+            string[] Checked = new string[0];
+            foreach (string WORD in words)
+            {
+                int count = 0;
+                if (!Checked.Contains(WORD))
+                {
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (WORD == words[i])
+                        {
+                            count++;
+
+                        }
+                    }
+                    //Checked, WORD
+                    AddIntoArray(ref Checked, WORD);
+                    Console.WriteLine($"\"{WORD}\":- \"{count}\" times");
+                }
+
+            }
+        }
+
+        static void RandomSentence(int Number, string[] ArrayWords, int NumberWords)
+        {
+            Random random = new Random();
+            for (int i = 0;i < Number;i++)
+            {
+                int length = ArrayWords.Length;
+                string RendomSentence = "";
+                for (int j = 0; j < NumberWords; j++)
+                {
+                    RendomSentence += ArrayWords[random.Next(length)]+ " ";
+                }  
+                Console.WriteLine(RendomSentence);
+            }
+        }
+        static void LongestShortest(string[] ArrayWords)
+        {
+            string[] longestArray = new string[0];
+            string[] shortestArray = new string[0];
+
+            int longest = ArrayWords[0].Length;
+            int longestIndex = 0;
+
+            int shortest = ArrayWords[0].Length;
+            int shortestIndex = 0;
+            for (int i = 0; i < ArrayWords.Length; i++)
+            {
+                int ItterativeLength = ArrayWords[i].Length;
+                if (ItterativeLength > longest)
+                {
+                    longest = ItterativeLength;
+                    longestIndex = i;
+                }
+                if  (ItterativeLength < shortest)
+                {
+                    shortest = ItterativeLength;
+                    shortestIndex = i;
+                    
+                }
+            }
+            foreach (string word in ArrayWords)
+            {
+                if ( word.Length == ArrayWords[longestIndex].Length && !(longestArray.Contains(word)))
+                {
+                    //longestArray , word
+                    AddIntoArray(ref longestArray, word);
+                }
+                if (word.Length == ArrayWords[shortestIndex].Length && !(shortestArray.Contains(word)))
+                {
+                    // shortestArray, word
+                    AddIntoArray(ref shortestArray, word);
+                }
+
+            }
+            Console.WriteLine($"The Longest Words:  \"{string.Join(", ", longestArray)}\" of length {ArrayWords[longestIndex].Length}");
+            Console.WriteLine($"The Shortest Words: \" {string.Join(", ", shortestArray)}\" of length {ArrayWords[shortestIndex].Length}");
+
+        }
+        static void WordSearch(string[] ArrayWords, string SearchWord)
+        {
+            int count = 0;
+            bool Search = false;
+            foreach (string word in ArrayWords)
+            {
+                if (SearchWord== word)
+                {
+                    Search= true;
+                    count += 1;
+                }
+            }
+            string Result = (Search) ? $"The word {SearchWord} is present and come {count} times in sentence" : $"Your Search word {SearchWord} is not exsist in the sentence";
+            Console.WriteLine(Result);
+        }
+        static void PalindromeDetector(string[] ArrayWords)
+        {
+            string[] Palindromes = new string[0];
+            foreach (string word in ArrayWords)
+            {
+                bool Palindrom = false;
+                for (int i= 0, j= word.Length - 1; i<=j; i++, j--)
+                {
+                    if (word[i] != word[j])
+                    {
+                        Palindrom = false; break;
+                    }
+                    Palindrom = true;
+                }
+                if (Palindrom)
+                {
+                    AddIntoArray(ref Palindromes, word);
+                }
+                //string Result =(Palindrom)? "":""?
+            }
+            Console.WriteLine($"There are {Palindromes.Length} Palindroms and the list is:  \"{string.Join(", ", Palindromes)}\" ");
+
+        }
+        //VowelConsonantCounter
+        static void VowelConsonantCounter(string[] ArrayWords)
+        {
+            foreach (string word in ArrayWords)
+            {
+                string vowelsChar = "";
+                string ConsonantChar = "";
+
+                int vowel = 0;
+                int Consonant = 0;
+
+                for (int i=0; i<word.Length; i++)
+                {
+                    if (word[i] == 'a' || word[i] == 'e' || word[i] == 'i' || word[i] == 'o' || word[i] == 'u')
+                    {
+                        vowel ++;
+                        vowelsChar += word[i];
+                    }
+                    else
+                    {
+                        Consonant++;
+                        ConsonantChar += word[i];
+                    }
+                }
+
+                string[] vowelsArray = vowelsChar.Split(',');
+                string[] ConsonantArray = ConsonantChar.Split(',');
+
+                Console.WriteLine($"The word {word} has {vowel} vowels :{string.Join(",", vowelsArray)} \n {Consonant} consonant: {string.Join(",", ConsonantArray)}");
+            }
+            
+        }
+
+
+    }
+}

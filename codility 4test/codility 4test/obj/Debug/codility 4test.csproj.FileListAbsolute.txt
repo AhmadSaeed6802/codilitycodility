@@ -1,0 +1,2 @@
+C:\Users\4890\source\repos\codility 4test\codility 4test\obj\Debug\codility 4test.csproj.AssemblyReference.cache
+C:\Users\4890\source\repos\codility 4test\codility 4test\obj\Debug\codility 4test.csproj.CoreCompileInputs.cache

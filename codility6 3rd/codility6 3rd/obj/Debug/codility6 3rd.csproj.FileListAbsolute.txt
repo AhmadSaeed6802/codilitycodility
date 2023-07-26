@@ -1,0 +1,7 @@
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\obj\Debug\codility6 3rd.csproj.AssemblyReference.cache
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\obj\Debug\codility6 3rd.csproj.CoreCompileInputs.cache
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\bin\Debug\codility6 3rd.exe.config
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\bin\Debug\codility6 3rd.exe
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\bin\Debug\codility6 3rd.pdb
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\obj\Debug\codility6 3rd.exe
+C:\Users\4890\source\repos\codility6 3rd\codility6 3rd\obj\Debug\codility6 3rd.pdb
